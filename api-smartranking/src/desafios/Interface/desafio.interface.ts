@@ -22,7 +22,6 @@ export interface Partida extends Document {
     resultado: Array<Resultado>;
 }
 
-export interface Resultado extends Document {
-
-    set:string;
+export interface Resultado {
+    set: string
 }
