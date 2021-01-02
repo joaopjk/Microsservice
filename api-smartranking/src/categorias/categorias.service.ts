@@ -52,20 +52,32 @@ export class CategoriasService {
         const categoria = params['categoria']
         const idJogador = params['idJogador']
 
-        const categoriaEncontrada = await this.categoriaModel.findOne({categoria}).exec();
-        const jogadorJaCadastradoNaCategoria = await this.categoriaModel.find({categoria}).where('jogadores').in(idJogador).exec();
+        const categoriaEncontrada = await this.categoriaModel.findOne({ categoria }).exec();
+        const jogadorJaCadastradoNaCategoria = await this.categoriaModel.find({ categoria }).where('jogadores').in(idJogador).exec();
         const jogadarExiste = await this.jogadoresService.consultarJogadorById(idJogador);
 
-        
-        if(!categoriaEncontrada){
+
+        if (!categoriaEncontrada) {
             throw new NotFoundException(`Categoria ${categoria} não encontrada !`)
         }
-        if(jogadorJaCadastradoNaCategoria.length >0){
+        if (jogadorJaCadastradoNaCategoria.length > 0) {
             throw new BadRequestException(`Jogador ${idJogador} já se encontra cadastrado na categoria ${categoria}`)
         }
 
         categoriaEncontrada.jogadores.push(idJogador)
-        await this.categoriaModel.findOneAndUpdate({categoria},{$set:categoriaEncontrada}).exec();
+        await this.categoriaModel.findOneAndUpdate({ categoria }, { $set: categoriaEncontrada }).exec();
+    }
+
+    async consultarCategoriaDoJogador(idJogador: any): Promise<Categoria> {
+
+        const jogadores = await this.jogadoresService.consultarJogadorById(idJogador)
+
+        if (jogadores === null) {
+            throw new BadRequestException(`O id ${idJogador} não é um jogador!`)
+        }
+
+        return await this.categoriaModel.findOne().where('jogadores').in(idJogador).exec()
+
     }
 
 }

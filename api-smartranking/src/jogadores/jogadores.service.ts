@@ -9,8 +9,6 @@ uuidv4();
 
 @Injectable()
 export class JogadoresService {
-    //private jogadores:Jogador[] = [];
-    //private readonly logger = new Logger(JogadoresService.name)
 
     constructor(@InjectModel('Jogador') private readonly jogadorModel: Model<Jogador>) { }
 
