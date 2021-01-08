@@ -1,1 +1,1 @@
-Microsservice
+Microsservice utilizando nest.js / RabbitMQ
